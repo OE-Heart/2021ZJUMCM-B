@@ -127,8 +127,8 @@ def cal_optimize_ratio(arr:List[member], total_num:int):
             _tmp_list.append(B_times)
         if(C_times):
             _tmp_list.append(C_times)
-        if(C_times):
-            _tmp_list.append(C_times)
+        if(D_times):
+            _tmp_list.append(D_times)
 
         return np.std(_tmp_list)
 
@@ -136,7 +136,7 @@ def cal_optimize_ratio(arr:List[member], total_num:int):
     for i in range(total_num):
         _condition2_list.append(cal_member_work_avg(arr[i], i))
     opt_ratio += np.mean(_condition2_list)
-    print(opt_ratio)
+    # print(opt_ratio)
     return opt_ratio
 
 
@@ -157,5 +157,6 @@ for possible_solution in list(permutations(alternative_list, work_num * 2)):
         max_ratio = _tmp_ratio
         ans = possible_solution
 
-print(ans)
+[print(i.__dict__) for i in ans]
+# print(ans)
 
