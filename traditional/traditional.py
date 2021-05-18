@@ -130,7 +130,7 @@ def cal_optimize_ratio(arr:List[member], total_num:int):
         if(D_times):
             _tmp_list.append(D_times)
 
-        return np.std(_tmp_list)
+        return -np.ptp(_tmp_list)
 
     _condition2_list = []
     for i in range(total_num):
