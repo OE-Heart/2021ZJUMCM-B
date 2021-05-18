@@ -23,8 +23,11 @@ class member:
     
     # calculate fair_ratio
     def cal_fair_ratio(self):
-        self.fair_ratio = (self.A_times + self.B_times + self.C_times + self.D_times) / self.past_day
-        if(self.past_day < 0):
+        if(self.past_day == 0):
+            self.fair_ratio = 0.0
+        else :
+            self.fair_ratio = (self.A_times + self.B_times + self.C_times + self.D_times) / self.past_day
+        if(self.past_day < 0 or self.past_day >= self.total_day):
             self.fair_ratio += 2
     # override < operator to sort 
     def __lt__(self, other):
@@ -46,6 +49,8 @@ for i in range(data.shape[0]):
         data.loc[:,"已安排C"][i],
         data.loc[:,"已安排D"][i]
     )
+    #if(new_member.mid == 10):
+    #    continue
     new_member.cal_fair_ratio()
     member_list.append(new_member)
 
@@ -135,7 +140,7 @@ def cal_optimize_ratio(arr:List[member], total_num:int):
     _condition2_list = []
     for i in range(total_num):
         _condition2_list.append(cal_member_work_avg(arr[i], i))
-    opt_ratio += np.mean(_condition2_list)
+    opt_ratio += np.mean(_condition2_list) * 0.2
     # print(opt_ratio)
     return opt_ratio
 
@@ -146,7 +151,10 @@ max_ratio = 0.0
 for possible_solution in list(permutations(alternative_list, work_num * 2)):
     validator = True
     for i in range(work_num):
-        if((not alternative_list[i*2].driver)and (not alternative_list[i*2+1].driver)):
+        if((not possible_solution[i*2].driver)and (not possible_solution[i*2+1].driver)):
+            validator = False
+            break
+        if(possible_solution[i*2].fair_ratio >= 2 or possible_solution[i*2+1].fair_ratio >= 2):
             validator = False
             break
     if(not validator):
